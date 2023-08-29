@@ -1,19 +1,19 @@
-# team040-Tean40
+# team040-Team40
 
 ## Basic Information
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
 | TeamID      |        Team-040        |
-| TeamName    |         Team40         |
-| Captain     |        Zhen Tang       |
+| TeamName    |         sample         |
+| Captain     |       Zhen Tang        |
 | Captain     |   zhent6@illinois.edu  |
 | Member1     |      Bo-Wei Huang      |
 | Member1     |  boweiwh2@illinois.edu |
-| Member2     |    Bharati Kulkarni    |
-| Member2     |  bharati1@illinois.edu |
-| Member3     |                        |
-| Member3     |                        |
+| Member2     |       Xiao Wang        |
+| Member2     |   xiaow4@illinois.edu  |
+| Member3     |      Kevin Zhang       |
+| Member3     |  kevinez2@illinois.edu |
 
 ## Project Information
 
@@ -25,4 +25,4 @@
 
 ## Project Summary
 
-This is a summary of the project!
+Project Summary Section
