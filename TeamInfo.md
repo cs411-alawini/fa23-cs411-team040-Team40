@@ -5,7 +5,7 @@
 |   Info      |        Description     |
 | ----------- | ---------------------- |
 | TeamID      |        Team-040        |
-| TeamName    |         sample         |
+| TeamName    |         Team40         |
 | Captain     |       Zhen Tang        |
 | Captain     |   zhent6@illinois.edu  |
 | Member1     |      Bo-Wei Huang      |
