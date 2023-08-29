@@ -8,8 +8,8 @@
 | TeamName    |         Team40         |
 | Captain     |        Zhen Tang       |
 | Captain     |   zhent6@illinois.edu  |
-| Member1     |        Kevin Pei       |
-| Member1     |   kevin2@illinois.edu  |
+| Member1     |      Bo-Wei Huang      |
+| Member1     |  boweiwh2@illinois.edu |
 | Member2     |    Bharati Kulkarni    |
 | Member2     |  bharati1@illinois.edu |
 | Member3     |                        |
