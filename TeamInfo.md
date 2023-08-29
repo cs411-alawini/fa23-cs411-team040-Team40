@@ -1,4 +1,4 @@
-# team000-sample
+# team040-sample
 
 ## Basic Information
 
@@ -6,8 +6,8 @@
 | ----------- | ---------------------- |
 | TeamID      |        Team-040        |
 | TeamName    |         Team40         |
-| Captain     |       Abdu Alawini     |
-| Captain     |  alawini@illinois.edu  |
+| Captain     |        Zhen Tang       |
+| Captain     |   zhent6@illinois.edu  |
 | Member1     |        Kevin Pei       |
 | Member1     |   kevin2@illinois.edu  |
 | Member2     |    Bharati Kulkarni    |
