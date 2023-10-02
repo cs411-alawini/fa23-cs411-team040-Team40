@@ -72,7 +72,7 @@ Likes(
 ```mysql
 GameType(
     gid: INT [PK] [FK to Game.gid]
-    genreID: INT [PK] [FK to Genres.genreID]
+    genreId: INT [PK] [FK to Genres.genreID]
 );
 ```
 
@@ -102,19 +102,19 @@ Assumptions - Each user has a unique uid which is associated with a unique usern
 
 Description - The **Games** table stores all game information, including title and introduction texts and URL. The $gid$ is the primary key.
 
-Assumptions - Each game has a unique $gid$ and all games should be stored in this table.
+Assumptions - Each game has a unique $gid$ and all games should be stored in this table. Each game should have a unique $title$ and a unique $link$. 
 
 **Genres:**
 
 Description - The **Genres** table stores information about different genres, including the $genreId$ and the name of the genre. The $genreId$ is the primary key.
 
-Assumptions - Each genre has a unique $genreId$ and all games’ genres should be stored in this table.
+Assumptions - Each genre record has a unique $genreId$ and a unique $type$ and all games’ genres should be stored in this table.
 
 **Platforms:**
 
 Description - The **Platforms** table stores information about different platforms, including the platform ID and the name of the platform. The $platformId$ is the primary key.
 
-Assumptions - Each platform has a unique $platformId$ and all platforms should be stored in this table.
+Assumptions - Each platform has a unique $platformId$ and a unique $platformName$ and all platforms should be stored in this table.
 
 **Producer:**
 
@@ -126,13 +126,13 @@ Assumptions - Each producer has a unique $producerId$ and a unique $producerName
 
 Description - The **Prices** table stores the statistical information for the price history of the games, including the $gid$, $date$ and $price$. The $gid$ and $date$ is the primary key. 
 
-Assumptions - Each game should have at least one price.
+Assumptions - The relationship between **Prices** and **Games** is one-to-many. Each game should have at least one price.
 
 **Reviews (weak):**
 
 Description - The **Reviews** table stores all the reviews written by users for games.
 
-Assumptions - Each review can only be written by one user and be for one game. Each user can write zero or more reviews and each review is written by one user. Each game can have zero or more reviews and each review is for one game.
+Assumptions - The relationship between **Reviews** and **Users** and that between **Reviews** and **Games** are both one-to-many. Each review can only be written by one user and be for one game. Each user can write zero or more reviews and each review is written by one user. Each game can have zero or more reviews and each review is for one game.
 
 ### Relationship Tables
 
@@ -140,96 +140,60 @@ Assumptions - Each review can only be written by one user and be for one game. E
 
 Description - The **Friends** table stores all friendships between two users. Both $uid$ and $friendId$ in **Friends** are referencing uid in **Users**, and they are the primary key.
 
-Assumptions - Each user can have zero or more friends. Each user can be the friend of zero or more users.
+Assumptions - The relationship is many-to-many. Each user can have zero or more friends. Each user can be the friend of zero or more users.
 
 **Likes:**
 
 Description - The **Likes** table stores the favorite games of the users. $Uid$ and $gid$ are the primary key. $Uid$ references $uid$ in Users. $Gid$ references to the $gid$ in Games.
 
-Assumptions - Each user can have zero or many favorite games. Each game can be liked by zero or many users.
+Assumptions - The relationship is many-to-many. Each user can have zero or many favorite games. Each game can be liked by zero or many users.
 
 **Supports:**
 
 Description - The **Supports** table stores the information about what platforms each game supports. 
 
-Assumptions - A game can be played on one or more platforms and each platform is supported by zero or more games.
+Assumptions - The relationship is many-to-many. A game can be played on one or more platforms and each platform is supported by zero or more games.
 
 **GameType:**
 
 Description - The **GameType** table stores the information about the genres of each game in the Games entity.
 
-Assumptions - Each game can have one or multiple genres and each genre can be associated with zero or multiple games.
+Assumptions - The relationship is many-to-many. Each game can have one or multiple genres and each genre can be associated with zero or multiple games.
 
 **Product:**
 
 Description - The **Product** table stores the relationship between a game and its producer, including the $gid$ and $producerId$. The $gid$ is the primary key and a foreign key referencing the $gid$ in the Game table. The $producerId$ is a foreign key referencing the $producerId$ in the Producer table.
 
-Assumptions - Each game should be produced by only one producer. A producer can produce zero or many games.
+Assumptions - The relationship is one-to-many. Each game should be produced by only one producer. A producer can produce zero or many games.
 
 
 ## Normalization
 
 ### Apply 3NF
 
-**Users:**
+**Users:** uid $\to$ username, password $^{(1)}$ ; username $\to$ uid $^{(2)}$
 
-uid $\to$ username, password $^{(1)}$
+**Games:** gid $\to$ title, introduction, link $^{(1)}$ ; link $\to$ gid $^{(2)}$ ; title $\to$ gid $^{(2)}$
 
-username $\to$ uid $^{(2)}$
+**Reviews:** uid, gid $\to$ rating, content $^{(1)}$
 
-**Games:**
+**Platforms:** platformId $\to$ platformName $^{(1)}$ ; platformName $\to$ platformId $^{(2)}$
 
-gid $\to$ title, introduction, link $^{(1)}$
+**Genres:** genreId $\to$ type $^{(1)}$ ; type $\to$ genreId $^{(2)}$
 
-link $\to$ gid $^{(2)}$
+**Prices:** gid, date $\to$ price $^{(1)}$
 
-title $\to$ gid $^{(2)}$
+**Producer:** producerId $\to$ producerName $^{(1)}$ ; producerName $\to$ producerId $^{(2)}$
 
-**Reviews:**
+**Friends:** No non-trival FDs
 
-uid, gid $\to$ rating, content $^{(1)}$
+**Likes:** No non-trival FDs
 
-**Platforms:**
+**GameType:** No non-trival FDs
 
-platformId $\to$ platformName $^{(1)}$
+**Product:** No non-trival FDs
 
-platformName $\to$ platformId $^{(2)}$
-
-**Genres:**
-
-genreId $\to$ type $^{(1)}$
-
-type $\to$ genreId $^{(2)}$
-
-**Prices:**
-
-gid, date $\to$ price $^{(1)}$
-
-**Producer:**
-
-producerId $\to$ producerName $^{(1)}$
-
-producerName $\to$ genreId $^{(2)}$
-
-**Friends:**
-
-No non-trival FDs
-
-**Likes:**
-
-No non-trival FDs
-
-**GameType:**
-
-No non-trival FDs
-
-**Product:**
-
-No non-trival FDs
-
-**Support:**
-
-No non-trival FDs
+**Support:** No non-trival FDs
 
 We can see that all of our tables are in 3NF since all the LHS of every non-trivial FD is the primary key (indicated with ${(1)}$) or the RHS is part of at least one primary key (indicated with ${(2)}$).
 
