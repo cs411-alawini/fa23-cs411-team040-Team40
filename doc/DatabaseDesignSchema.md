@@ -3,7 +3,6 @@
 ## ER Diagram
 
 ![ER](./image/PT1%20Stage2%20ERD.png)
-<center><img src="./image/crow-s-foot-notation.png" alt="drawing" width="50"/></center>
 
 ## Relational Schema
 
