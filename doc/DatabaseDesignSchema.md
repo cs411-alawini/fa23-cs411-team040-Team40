@@ -3,6 +3,7 @@
 ## ER Diagram
 
 ![ER](./image/PT1%20Stage2%20ERD.png)
+![notation](image/crow-s-foot-notation.png =100x)
 
 ## Relational Schema
 
@@ -162,31 +163,48 @@ Assumptions - Each game should be produced by only one producer. A producer can 
 ## Normalization
 
 ### Apply 3NF
-Users:
-uid $\to$ username, password; username $\to$ uid;
-Games:
-gid $\to$ title, introduction, link; link $\to$ gid; title $\to$ gid;
-Reviews:
-uid, gid $\to$ rating, content;
-Platforms:
-platformId $\to$ platformName, platformName $\to$ platformId
-Genres:
-genreId $\to$ type; type $\to$ genreId
-Prices:
-gid, date $\to$ price
-Producer:
-producer_Id $\to$ producerName; type $\to$ genreId
-Friends:
-No non-trival FDs;
-Likes:
-No non-trival FDs;
-GameType:
-No non-trival FDs;
-Product:
-No non-trival FDs;
-Support:
+**Users:**
+uid $\to$ username, password $^{(1)}$
+username $\to$ uid $^{(2)}$
+
+**Games:**
+gid $\to$ title, introduction, link $^{(1)}$
+link $\to$ gid $^{(2)}$
+title $\to$ gid $^{(2)}$
+
+**Reviews:**
+uid, gid $\to$ rating, content $^{(1)}$
+
+**Platforms:**
+platformId $\to$ platformName $^{(1)}$
+platformName $\to$ platformId $^{(2)}$
+
+**Genres:**
+genreId $\to$ type $^{(1)}$
+type $\to$ genreId $^{(2)}$
+
+**Prices:**
+gid, date $\to$ price $^{(1)}$
+
+**Producer:**
+producerId $\to$ producerName $^{(1)}$
+producerName $\to$ genreId $^{(2)}$
+
+**Friends:**
 No non-trival FDs;
 
-We can see that all of our tables are in 3NF since all the LHS is the primary key or the RHS is a part of candidate key.
+**Likes:**
+No non-trival FDs;
 
-3NF normalization was chosen because unlike BCNF, 3NF preserves functional dependencies. In addition, 3NF normalization avoids information loss. 
+**GameType:**
+No non-trival FDs;
+
+**Product:**
+No non-trival FDs;
+
+**Support:**
+No non-trival FDs;
+
+We can see that all of our tables are in 3NF since all the LHS of every non-trivial FD is the primary key (indicated with ${(1)}$) or the RHS is part of at least one primary key (indicated with ${(2)}$).
+
+3NF normalization was chosen because unlike BCNF, 3NF preserves functional dependencies. In addition, 3NF normalization avoids information loss. Becuase 3NF preserves functional dependencies, we do not have to create more tables to reinforce those functional dependencies. Such tables would make it so more joins would be required which is extremely computationally expensive. 
