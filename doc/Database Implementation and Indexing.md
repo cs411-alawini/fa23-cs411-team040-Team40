@@ -292,21 +292,27 @@ As shown by the EXPLAIN ANALYZE command, Query 1 has a default cost of about 570
 
 #### Indexing Design 1
 We first chose to create an index on *genre* because it is one of the two attributes that Query 1 filters by in the second subquery.
-`CREATE INDEX idx_Genres_genre ON Genres(genre);`
+```mysql=
+CREATE INDEX idx_Genres_genre ON Genres(genre);
+```
 ![](./image/Query1Genre.png)
 By creating an index on the *genre* column in the **Genres** table we can clearly see from the output of the EXPLAIN ANALYZE command that the query will execute using an index lookup instead of a table scan of the *genre* column. Effectively, this brings down the overall cost of the query to just 4385.71. This is be considered to be a measurable improvement compared to the original query without indexing.
 Creating an index on the *genre* column allows the query to search up specific *genres* that are relevant to the final result instead of having to perform a table scan. This in turn will decrease the cost of the overall query.
 
 #### Indexing Design 2
 We then chose to create an index on *releaseDate* because it is one of the other two attributes that Query 1 filters by in the second subquery. 
-`CREATE INDEX idx_Games_releaseDate ON Games(releaseDate)`
+```mysql=
+CREATE INDEX idx_Games_releaseDate ON Games(releaseDate)
+```
 ![](./image/Query1ReleaseDate.png)
 By creating an index on the *releaseDate* column in the **Games** table we can clearly see from the output of the EXPLAIN ANALYZE command that the query actually performs worse. Specifically, the cost of the entire query increases. As such, creating an index on releaseDate actually worsened query performance indicating that an index should not be put on *releaseDate*.
 We think creating an index on the *releaseDate* column decreases performance because most of our games do have a *releaseDate* greater than the *releaseDate* specified. Thus, putting an index on *releaseDate* should either worsen or not change query performance.
 
 #### Indexing Design 3
 Looking elsewhere, we chose to create an index on *rating* in the **Reviews** table because it is the column that we group by in Query 1's group by clause. 
-`CREATE INDEX idx_Reviews_rating on Reviews(rating);`
+```mysql=
+CREATE INDEX idx_Reviews_rating on Reviews(rating);
+```
 ![](./image/Query1Ratings.png)
 As shown from the output of the EXPLAIN ANALYZE command, the cost improved minimally compared to the original query without indexes which indicates that puting an index on releaseDate has a minimal effect on the overall performance of the query. 
 For a group by clause, putting an index on the attribute to group by should not improve the query that significantly since during query execution, a full table scan will still be needed as every record needs to be grouped together. Lookup times will be faster, but the majority of the time spent will be going through all the records in the table.
@@ -321,20 +327,27 @@ As shown by the EXPLAIN ANALYZE command, the default cost is 60584 for the whole
 
 #### Indexing Design 1
 We first chose to create an index on *Initialprice* as our first index since it is one of three attributes that appear in the filter of the second subquery of Query 2. 
-`CREATE INDEX initial_price_idx ON Prices(Initialprice);`
+```mysql=
+CREATE INDEX initial_price_idx ON Prices(Initialprice);
+```
 ![](./image/Query2Initialprice.png)
 By creating an index on the *Initialprice* column in the **Prices** table, it can be observed  that the total cost of the query reduces from 60584 to 41359 and the cost of the filter decreases from 57668 to 39985. As such, we can conclude that putting an index on *Initialprice* greatly improves our query's performance and should be included in the final index design.
 
 
 #### Indexing Design 2
 We then chose to create an index on *Finalprice* since it is one of the other three attributes that appear in the filter of the second subquery of Query 2.
-`CREATE INDEX final_price_idx ON Prices(Finalprice);`
+```mysql=
+CREATE INDEX final_price_idx ON Prices(Finalprice);
+```
 ![](./image/Query2Finalprice.png)
 By creating an index on the *Finalprice* column in the **Prices** table, it can be observed  that the total cost of the query reduces from 60584 to 38065 and the cost of filter decreases from 57668 to 36800. As such, we can conclude that putting an index on *Finalprice* greatly improves our query's performance and should be included in the final index design.
 
 #### Indexing Design 3
 Finally, we chose to create an index on *Discount* since it is the last of the three attributes that appear in the filter of the second subquery of Query 2. 
-`CREATE INDEX discount_idx ON Prices(Discount);`
+
+```mysql=
+CREATE INDEX discount_idx ON Prices(Discount);
+```
 ![](./image/Query2Discount.png)
 Similarly to the other two indexes, we observe that the cost decreases when an index is created on the *Discount* column. Theorectically, this could be due to the fact that we are filtering by an exact value instead of a range of values like the other two attributes. As such, is can be concluded that putting an index on *Discount* will dramatically improve our query's performance.
 
