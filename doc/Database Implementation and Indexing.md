@@ -3,7 +3,7 @@
 ## Part 1 Database Implementation
 
 ### GCP Database Implementation
-![](https://hackmd.io/_uploads/ryho_MyX6.jpg)
+![](./image/terminal.jpg)
 
 ### DDL Commands
 
