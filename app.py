@@ -1,12 +1,12 @@
+from flask import Flask, render_template, jsonify, redirect, request, url_for, flash, session
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
-
+app = Flask(__name__)
 # initialize Connector object
-connector = Connector()
-
 # function to return the database connection
 def getconn() -> pymysql.connections.Connection:
+    connector = Connector()
     conn: pymysql.connections.Connection = connector.connect(
         "cs-411-team:us-central1:myinstance",
         "pymysql",
@@ -16,17 +16,13 @@ def getconn() -> pymysql.connections.Connection:
     )
     return conn
 
-# create connection pool
-pool = sqlalchemy.create_engine(
+
+def getPool(conn):
+    pool = sqlalchemy.create_engine(
     "mysql+pymysql://",
-    creator=getconn,
-)
+    creator=conn)
+    return pool
 
-with pool.connect() as db_conn:
-    result = db_conn.execute(sqlalchemy.text("SELECT * from Users")).fetchall()
 
-    # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-    # db_conn.commit()
-
-    for row in result:
-        print(row)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
