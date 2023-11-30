@@ -3,7 +3,7 @@ from app import pool
 
 friends = Blueprint('friends', __name__, url_prefix='/friends')
 
-@friends.route('/friends', methods=["GET", "POST"])
+@friends.route('/', methods=["GET", "POST"])
 def add_friend():
     if 'username' not in session:
         return redirect(url_for('login.login'))
@@ -31,7 +31,7 @@ def add_friend():
             return redirect(url_for('friends', methods=["GET"]))
 
 
-@friends.route('/friends', methods=["POST"])
+@friends.route('/remove', methods=["POST"])
 def remove_friend():
     if 'username' not in session:
         return redirect(url_for('login.login'))
@@ -46,6 +46,23 @@ def remove_friend():
     connection.commit()
     flash('Successfully removed %s as a friend', friendname)
     return redirect(url_for('friends', methods=["GET"]))
+
+@friends.route('/list', methods=["GET"])
+def list_friends_games():
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    friendname = request.args.get("friendusername")
+    friendid = cursor.execute("SELECT userid FROM users WHERE username = %s", friendname)
+
+    cursor.execute("Select title, link FROM Games NATURAL JOIN Likes WHERE UserID = %s", friendid)
+    games_list = list(cursor.fetchall())
+
+    cursor.execute("SELECT title, link FROM Games NATURAL JOIN Reviews WHERE UserID = %s", friendid)
+    rec_list = cursor.fetchall()
+
+    connection.commit()
+
+    return render_template("friendgames.html", riend=friendname, games_list=games_list, rec_list=rec_list)
 
 
 
