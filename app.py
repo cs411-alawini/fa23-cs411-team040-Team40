@@ -1,6 +1,10 @@
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
+from flask import Flask
+
+app = Flask(__name__)
+
 
 # initialize Connector object
 connector = Connector()
@@ -22,11 +26,5 @@ pool = sqlalchemy.create_engine(
     creator=getconn,
 )
 
-with pool.connect() as db_conn:
-    result = db_conn.execute(sqlalchemy.text("SELECT * from Users")).fetchall()
-
-    # commit transaction (SQLAlchemy v2.X.X is commit as you go)
-    # db_conn.commit()
-
-    for row in result:
-        print(row)
+if __name__ == '__main__':
+    app.run()
