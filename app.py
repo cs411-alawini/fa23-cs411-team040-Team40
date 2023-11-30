@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify, redirect, request, url_for, f
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
-app = Flask(__name__)from flask import Flask
 
 app = Flask(__name__)
 
