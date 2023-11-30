@@ -1,16 +1,16 @@
+from flask import Flask, render_template, jsonify, redirect, request, url_for, flash, session
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
-from flask import Flask
+app = Flask(__name__)from flask import Flask
 
 app = Flask(__name__)
 
 
 # initialize Connector object
-connector = Connector()
-
 # function to return the database connection
 def getconn() -> pymysql.connections.Connection:
+    connector = Connector()
     conn: pymysql.connections.Connection = connector.connect(
         "cs-411-team:us-central1:myinstance",
         "pymysql",
@@ -19,6 +19,7 @@ def getconn() -> pymysql.connections.Connection:
         db="steam"
     )
     return conn
+
 
 # create connection pool
 pool = sqlalchemy.create_engine(
