@@ -57,9 +57,8 @@ def list_friends_games():
     cursor.execute("Select title, link FROM Games NATURAL JOIN Likes WHERE UserID = %s", friendid)
     games_list = list(cursor.fetchall())
 
-    cursor.execute("SELECT title, link FROM Games NATURAL JOIN Reviews WHERE UserID = %s", friendid)
-    rec_list = cursor.fetchall()
-
+    cursor.execute("SELECT title, link, rating, content FROM Games NATURAL JOIN Reviews WHERE UserID = %s", friendid)
+    rec_list = list(cursor.fetchall())
     connection.commit()
 
     return render_template("friendgames.html", riend=friendname, games_list=games_list, rec_list=rec_list)
