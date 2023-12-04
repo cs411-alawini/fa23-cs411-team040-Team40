@@ -10,9 +10,9 @@ def add_friend():
     userid = session['userid']
     connection = pool.raw_connection()
     cursor = connection.cursor()
-    if request.method == "Get":
-        cursor.execute("SELECT * FROM friends WHERE userid = %s", (userid,))
-        friends = cursor.fetchall()
+    if request.method == "GET":
+        cursor.execute("SELECT Users.userid, username FROM Friends join Users on friendID = Users.userid WHERE userid = %s", (userid,))
+        friends = list(cursor.fetchall())
         return render_template('friends.html', friends=friends)
     
     elif request.method == "POST":
@@ -61,7 +61,7 @@ def list_friends_games():
     rec_list = list(cursor.fetchall())
     connection.commit()
 
-    return render_template("friendgames.html", riend=friendname, games_list=games_list, rec_list=rec_list)
+    return render_template("dispaly_games.html", riend=friendname, games_list=games_list, rec_list=rec_list)
 
 
 

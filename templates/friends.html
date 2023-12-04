@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .friends-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .friend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .friend-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-friend-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .add-friend-form input {
+            width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-friend-form button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Steam</h1>
+
+        <div class="tabs">
+            <a class="tab" href="/gamesearch">Game Search</a>
+            <a class="tab" href="/gamerec">Game Reccomender</a>
+            <a class="tab active" href="/friends">Friends</a>
+            <a class="tab" href="/games">Your Games</a> 
+        </div>
+
+        <div class="main-box">
+            <div class="friends-list">
+                <h2>Friends List:</h2>
+                <ul class="friend-list">
+                    {% for friend in friends %}
+                    <li class="friend-item">
+                        <span class="friend-name">{{ friend[1] }}</span>
+                        <form class="friend-games-form" action="/friends/list">
+                            <input type="hidden" name="friendID" value="{{ friend[0] }}">
+                            <button class="friend-games-button" type="submit">review</button>
+                        </form>
+                        <form class="remove-friend-form" method="POST" action="/friends/remove">
+                            <input type="hidden" name="friendID" value="{{ friend[0] }}">
+                            <button class="remove-friend-button" type="submit">remove</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                    {% if not friend_list %}
+                    <span>No friends added currently</span>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <form class="add-friend-form" action="/friends">
+                <input type="text" name="friendusername" placeholder="Enter username" id="newFriendUsername">
+                <button type="submit" value="Add Friend"> add</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
