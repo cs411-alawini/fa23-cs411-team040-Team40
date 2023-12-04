@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
-from app import pool
+from db import pool
 
 friends = Blueprint('friends', __name__, url_prefix='/friends')
 
@@ -11,24 +11,26 @@ def add_friend():
     connection = pool.raw_connection()
     cursor = connection.cursor()
     if request.method == "GET":
-        cursor.execute("SELECT Users.userid, username FROM Friends join Users on friendID = Users.userid WHERE userid = %s", (userid,))
+        cursor.execute("SELECT Users.uid, username FROM Friends join Users on friendID = Users.uid WHERE Friends.uid = %s", (userid,))
         friends = list(cursor.fetchall())
+        connection.commit()
         return render_template('friends.html', friends=friends)
-    
-    elif request.method == "POST":
-        friendname = request.form['friendname']
-        friendid = cursor.execute("SELECT userid FROM users WHERE username = %s", (friendname,))
-        if friendid == None:
-            flash('User does not exist')
-            return redirect(url_for('friends', methods=["GET"]))
-        elif friendid == userid:
-            flash('Cannot add yourself as a friend')
-            return redirect(url_for('friends', methods=["GET"]))
-        else:
-            cursor.execute("INSERT INTO friends (userid, friendid) VALUES (%s, %s)", (userid, friendid))
-            connection.commit()
-            flash('Successfully added friend')
-            return redirect(url_for('friends', methods=["GET"]))
+
+
+    friendname = request.form['friendname']
+    cursor.execute("SELECT uid FROM Users WHERE username = %s", friendname)
+    friendid = cursor.fetchall()
+    if friendid == ():
+        flash('User does not exist')
+        return redirect(url_for('add_friend', methods=["GET"]))
+    elif friendid[0] == userid:
+        flash('Cannot add yourself as a friend')
+        return redirect(url_for('add_friend', methods=["GET"]))
+    else:
+        cursor.execute("INSERT INTO Friends (uid, friendid) VALUES (%s, %s)", (userid, friendid))
+        connection.commit()
+        flash('Successfully added friend')
+        return redirect(url_for('add_friend', methods=["GET"]))
 
 
 @friends.route('/remove', methods=["POST"])
@@ -39,29 +41,30 @@ def remove_friend():
     connection = pool.raw_connection()
     cursor = connection.cursor()
 
-    friendname = request.form['friendname']
-    friendid = cursor.execute("SELECT userid FROM users WHERE username = %s", (friendname,))
+    friendid = request.form['friendid']
+    cursor.execute("SELECT username FROM Users WHERE uid = %s", friendid)
+    friendname = cursor.fetchall()[0][0]
 
-    cursor.execute("DELETE FROM friends WHERE userid = %s AND friendid = %s", (userid, friendid))
+    cursor.execute("DELETE FROM Friends WHERE uid = %s AND friendid = %s", (userid, friendid))
     connection.commit()
-    flash('Successfully removed %s as a friend', friendname)
-    return redirect(url_for('friends', methods=["GET"]))
+    flash(f'Successfully removed {friendname} as a friend')
+    return redirect(url_for('add_friend', methods=["GET"]))
 
 @friends.route('/list', methods=["GET"])
 def list_friends_games():
-    connection = pool.raw_connection() 
+   connection = pool.raw_connection() 
     cursor = connection.cursor()
-    friendname = request.args.get("friendusername")
-    friendid = cursor.execute("SELECT userid FROM users WHERE username = %s", friendname)
+    friendid = request.args.get("friendid")
 
-    cursor.execute("Select title, link FROM Games NATURAL JOIN Likes WHERE UserID = %s", friendid)
+    cursor.execute("Select title, link, introduction FROM Games NATURAL JOIN Likes WHERE uid = %s", friendid)
     games_list = list(cursor.fetchall())
 
-    cursor.execute("SELECT title, link, rating, content FROM Games NATURAL JOIN Reviews WHERE UserID = %s", friendid)
+    cursor.execute("SELECT title, link, introduction FROM Games NATURAL JOIN Reviews WHERE uid = %s", friendid)
     rec_list = list(cursor.fetchall())
+    games_list.extend(rec_list)
     connection.commit()
-
-    return render_template("dispaly_games.html", riend=friendname, games_list=games_list, rec_list=rec_list)
+    print(games_list)
+    return render_template("dispaly_games.html", games_list=games_list)
 
 
 

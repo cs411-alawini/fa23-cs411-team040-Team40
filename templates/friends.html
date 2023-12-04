@@ -117,28 +117,42 @@
                     <li class="friend-item">
                         <span class="friend-name">{{ friend[1] }}</span>
                         <form class="friend-games-form" action="/friends/list">
-                            <input type="hidden" name="friendID" value="{{ friend[0] }}">
+                            <input type="hidden" name="friendid" value="{{ friend[0] }}">
                             <button class="friend-games-button" type="submit">review</button>
                         </form>
                         <form class="remove-friend-form" method="POST" action="/friends/remove">
-                            <input type="hidden" name="friendID" value="{{ friend[0] }}">
+                            <input type="hidden" name="friendid" value="{{ friend[0] }}">
                             <button class="remove-friend-button" type="submit">remove</button>
                         </form>
                     </li>
                     {% endfor %}
-                    {% if not friend_list %}
-                    <span>No friends added currently</span>
+                    {% if not friends %}
+                        <span>No friends added currently</span>
                     {% endif %}
                 </ul>
             </div>
 
-            <form class="add-friend-form" action="/friends">
-                <input type="text" name="friendusername" placeholder="Enter username" id="newFriendUsername">
-                <button type="submit" value="Add Friend"> add</button>
-            </form>
+
+            <div class="add-friend-box">
+                <h2>Add Friends:</h2>
+                <form method="POST" action="/">
+                    <input type="text" name="friendname" placeholder="Enter username">
+                    <button type="submit" value="Add Friend"> add</button>
+                </form>
+            </div>
         </div>
     </div>
 
 </body>
 
 </html>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
