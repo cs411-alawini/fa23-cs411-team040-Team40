@@ -1,7 +1,8 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
 from app import pool
 
-@likesreviews.route('/reviews', methods=['GET', 'POST'])
+reviews = ('reviews', __name__, url_prefix='/reviews')
+@reviews.route('/', methods=['GET', 'POST'])
 def review_game():
     if 'username' not in session:
         return redirect(url_for('login.login'))
@@ -36,4 +37,4 @@ def review_game():
         cursor.execute("SELECT * FROM Reviews WHERE gid = %s", (gameid,))
         existing_reviews = cursor.fetchall()
 
-        return render_template('review.html', gameid=gameid, existing_reviews=existing_reviews)
+        return render_template('reviews.html', gameid=gameid, existing_reviews=existing_reviews)
