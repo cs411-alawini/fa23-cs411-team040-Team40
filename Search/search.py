@@ -54,6 +54,7 @@ WHERE {' AND '.join(conditions)};
     
     cursor.execute(query)'''
     games_list = cursor.fetchall()
+    #print(games_list)
     
     return render_template("games.html", games_list=games_list)
 
@@ -74,9 +75,9 @@ BEGIN
     DECLARE done INT DEFAULT FALSE;
     DECLARE game_id, genre_id, platform_id INT;
     DECLARE final_price DECIMAL(10,2);
-    DECLARE game_title, producer_name VARCHAR(255);
+    DECLARE game_title, game_link, producer_name VARCHAR(255);
     DECLARE cur CURSOR FOR 
-        SELECT g.gid, g.title, p.producerName, MAX(pr.Finalprice)
+        SELECT g.gid, g.title, g.link, p.producerName, MAX(pr.Finalprice)
         FROM Games g
         JOIN Products pd ON g.gid = pd.gid
         JOIN Producers p ON pd.producerID = p.producerID
@@ -85,13 +86,14 @@ BEGIN
           AND (in_producer IS NULL OR p.producerName LIKE CONCAT('%', in_producer, '%'))
           AND (in_lowest_price IS NULL OR pr.Finalprice >= in_lowest_price)
           AND (in_highest_price IS NULL OR pr.Finalprice <= in_highest_price)
-        GROUP BY g.gid, g.title, p.producerName;
+        GROUP BY g.gid, g.title, g.link, p.producerName;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
     -- Temporary table to store results
     CREATE TEMPORARY TABLE IF NOT EXISTS TempSearchResults (
         GameID INT,
         Title VARCHAR(255),
+        Link VARCHAR(255),
         ProducerName VARCHAR(255),
         Price DECIMAL(10,2)
     );
@@ -99,7 +101,7 @@ BEGIN
     OPEN cur;
 
     read_loop: LOOP
-        FETCH cur INTO game_id, game_title, producer_name, final_price;
+        FETCH cur INTO game_id, game_title, game_link, producer_name, final_price;
         IF done THEN
             LEAVE read_loop;
         END IF;
@@ -120,13 +122,13 @@ BEGIN
         END IF;
 
         -- Insert into temporary table
-        INSERT INTO TempSearchResults (GameID, Title, ProducerName, Price) VALUES (game_id, game_title, producer_name, final_price);
+        INSERT INTO TempSearchResults (GameID, Title, Link, ProducerName, Price) VALUES (game_id, game_title, game_link, producer_name, final_price);
     END LOOP;
 
     CLOSE cur;
 
     -- Return the results
-    SELECT * FROM TempSearchResults;
+    SELECT GameID, Title, Link FROM TempSearchResults;
 
     -- Drop the temporary table
     DROP TEMPORARY TABLE IF EXISTS TempSearchResults;
