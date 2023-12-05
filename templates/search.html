@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Search System</title>
+    <!-- Add any additional stylesheets or scripts here -->
+</head>
+<body>
+    <h1>Game Search System</h1>
+
+    <form action="/gamesearch/results" method="get">
+        <!-- Search Box for Game Pattern -->
+        <label for="pattern">Search Games</label>
+        <input type="text" id="pattern" name="pattern" placeholder="Enter game name or keyword">
+        <br><br>
+
+        <!-- Search Box for Game Producer -->
+        <label for="producer">Producer</label>
+        <input type="text" id="producer" name="producer" placeholder="Enter game producer or keyword">
+        <br><br>
+
+        <!-- Price Range -->
+        <label for="prices">Price Range</label>
+        <input type="number" name="lprice" placeholder="Lowest Price">
+        <input type="number" name="hprice" placeholder="Highest Price">
+        <br><br>
+
+        <!-- Check for Selecting Genres -->
+        <fieldset>
+            <legend>Genres</legend>
+            <input type="checkbox" name="genres" value="1"> Indie <br>
+            <input type="checkbox" name="genres" value="2"> Action <br>
+            <input type="checkbox" name="genres" value="3"> Adventure <br>
+            <input type="checkbox" name="genres" value="4"> Casual <br>
+            <input type="checkbox" name="genres" value="5"> Strategy <br>
+            <input type="checkbox" name="genres" value="6"> RPG <br>
+            <input type="checkbox" name="genres" value="7"> Simulation <br>
+            <input type="checkbox" name="genres" value="8"> EarlyAccess <br>
+            <input type="checkbox" name="genres" value="9"> FreeToPlay <br>
+            <input type="checkbox" name="genres" value="10"> Sports <br>
+            <input type="checkbox" name="genres" value="11"> Racing <br>
+            <input type="checkbox" name="genres" value="12"> MassivelyMultiplayer <br>
+            <!-- Add more genre checkboxes -->
+        </fieldset>
+        <br><br>
+
+        <!-- Check for Selecting Platform -->
+        <fieldset>
+            <legend>Platforms</legend>
+            <input type="checkbox" name="platforms" value="0"> Windows <br>
+            <input type="checkbox" name="platforms" value="1"> Linux <br>
+            <input type="checkbox" name="platforms" value="2"> Mac <br>
+            <!-- Add more platform checkboxes -->
+        </fieldset>
+        <br><br>
+
+        
+
+        <!-- Search Button -->
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>
