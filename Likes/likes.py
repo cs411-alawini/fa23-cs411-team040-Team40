@@ -14,7 +14,7 @@ def like_game():
     if request.method == "GET":
         cursor.execute("SELECT gid, title, link, introduction from Likes natural join Games where uid = %s", (userid,))
         like_lists = list(cursor.fetchall())
-        return render_template('game.html', game_list = like_lists)
+        return render_template('games.html', game_list = like_lists)
     
     gid = request.form['gid']
     cursor.execute("SELECT gid where uid = %s", (userid,))
@@ -22,6 +22,9 @@ def like_game():
 
     if gid == ():
         flash('Game does not exist')
+        return redirect(url_for('games.game', methods=["GET"]))
+    elif gid in gids:
+        flash('Game already liked')
         return redirect(url_for('games.game', methods=["GET"]))
     else:
         cursor.execute("INSERT INTO Likes (uid, gid) VALUES (%s, %s)", (userid, gid))
