@@ -5,8 +5,6 @@ friends_bp = Blueprint('friends', __name__, url_prefix='/friends')
 
 @friends_bp.route('/', methods=["GET", "POST"])
 def add_friend():
-    session['userid'] = 1
-    session['username'] = 'test'
     if 'username' not in session:
         return redirect(url_for('login.login'))
     userid = session['userid']
