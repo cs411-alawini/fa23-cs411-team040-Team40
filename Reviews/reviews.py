@@ -31,7 +31,7 @@ def review_game():
         cursor.execute("SELECT * FROM Reviews WHERE gid = %s", (gid,))
         existing_reviews = cursor.fetchall()
 
-        return redirect(url_for('game.html', methods=["GET"]))
+        return redirect(url_for('games.game'))
     
 @reviews_bp.route('/remove', methods=['POST'])
 def remove_review():
