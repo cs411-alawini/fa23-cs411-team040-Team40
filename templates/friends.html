@@ -116,7 +116,7 @@
                     {% for friend in friends %}
                     <li class="friend-item">
                         <span class="friend-name">{{ friend[1] }}</span>
-                        <form class="friend-games-form" action="/friends/list">
+                        <form class="friend-games-form" method= "GET" action="/games">
                             <input type="hidden" name="friendid" value="{{ friend[0] }}">
                             <button class="friend-games-button" type="submit">review</button>
                         </form>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam - Game Results</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Steam - Game Results</h1>
+
+        <div class="game-results">
+            {% for game_info in games_list %}
+            <div class="game">
+                <img src="{{ game_info[2] }}" alt="{{ game_info[1] }}">
+                <p>{{ game_info[1] }}</p>
+                <form method="POST" action="/games" >
+                    <input type="hidden" name="gid" value="{{ game_info[0] }}">
+                    <button type="submit">View Detail</button>
+                </form>
+            </div>
+            {% endfor %}    
+        </div>
+    </div>
+</body>

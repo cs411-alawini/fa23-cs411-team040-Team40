@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam - Game Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #ddd;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Steam - Game Detail</h1>
+        <div class="game-detail">
+            <img src="{{ game_info[2] }}" alt="{{ game_info[1] }}">
+            <h2>{{ game_info[1] }}</h2>
+            <p>{{ game_info[3] }}</p>
+
+            {% if current_user_likes_game %}
+                <form method="post" action="/likes/dislike">
+                    <input type="hidden" name="gid" value="{{ game_info[0] }}">
+                    <button type="submit">dislike</button>
+                </form>
+            {% else %}
+                <form method="post" action="{/likes}">
+                    <input type="hidden" name="gid" value="{{ game_info[0] }}">
+                    <button type="submit">like</button>
+                </form>
+            {% endif %}
+
+            <div class="reviews">
+                <h3>Existing Reviews:</h3>
+                <ul>
+                    {% for review in existing_reviews %}
+                        <li>{{ review[0] }} - {{ review[1] }}/10: {{ review[2] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <h3>Write a Review:</h3>
+            <form method="post" action="/reviews">
+                <label for="rating">Rating:</label>
+                <input type="number" name="rating" min="1" max="10" step="0.1" required>
+                <br>
+                <label for="comment">Comment:</label>
+                <textarea name="comment" rows="4" required></textarea>
+                <br>
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
