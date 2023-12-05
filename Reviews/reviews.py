@@ -47,6 +47,6 @@ def remove_review():
     connection.commit()
     flash(f'Successfully removed review')
 
-    cursor.execute("SELECT gid, rating, content FROM Reviews natural join Users WHERE uid = %s", (userid,))
+    cursor.execute("SELECT gid, title, rating, content FROM Reviews natural join Users WHERE uid = %s", (userid,))
     existing_reviews = list(cursor.fetchall())
     return render_template('reviews.html', existing_reviews=existing_reviews)
