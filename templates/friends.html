@@ -94,13 +94,26 @@
             background-color: #4caf50;
             color: white;
             cursor: pointer;
+        }        
+        .logout-button {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgb(79, 60, 138);
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Steam</h1>
+        <h1>SteamNavigator - Friends</h1>
 
         <div class="tabs">
             <a class="tab" href="/gamesearch">Game Search</a>
@@ -109,6 +122,8 @@
             <a class="tab" href="/reviews">My Reviews</a>
             <a class="tab" href="/likes">Favorites</a> 
         </div>
+
+        <a class="logout-button" href="/login/logout">Logout</a>
 
         <div class="main-box">
             <div class="friends-list">
@@ -140,6 +155,15 @@
                     <input type="text" name="friendname" placeholder="Enter username">
                     <button type="submit" value="Add Friend"> add</button>
                 </form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li class="flash-message">{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>
     </div>
@@ -147,13 +171,3 @@
 </body>
 
 </html>
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class="flash-messages">
-      {% for message in messages %}
-        <li class="flash-message">{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <body>
     <h1>Login</h1>
-    {% with messages = get_flashed_messages() %}
+    <!-- {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
             {% for message in messages %}
@@ -9,7 +9,7 @@
             {% endfor %}
         </ul>
         {% endif %}
-    {% endwith %}
+    {% endwith %} -->
     <form method="POST" action="/login">
         <label for="username">Username:</label><br>
         <input type="text" name="username" required><br>
@@ -20,4 +20,14 @@
     {% block content %}    
     <p>Don't have an account? <a href="{{ url_for('login.signup') }}">Signup here</a>.</p>
     {% endblock %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    
 </body>

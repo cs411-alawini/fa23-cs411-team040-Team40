@@ -53,7 +53,21 @@
     
             .tab-content {
                 display: none;
-            }
+            }        
+            
+            .logout-button {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgb(79, 60, 138);
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
     
         </style>
     </head>
@@ -61,7 +75,7 @@
 
 <body>
     <div class="container">
-        <h1>Steam</h1>
+        <h1>SteamNavigator</h1>
 
         <div class="tabs">
             <a class="tab" href="/gamesearch">Game Search</a>
@@ -70,8 +84,11 @@
             <a class="tab" href="/reviews">My Reviews</a>
             <a class="tab" href="/likes">Favorites</a> 
         </div>
+        
+        <a class="logout-button" href="/login/logout">Logout</a>
 
-        <h1>Game Search System</h1>
+        <!-- <h1>Game Search System</h1> -->
+        
 
         <form action="/gamesearch/results" method="get">
             <!-- Search Box for Game Pattern -->

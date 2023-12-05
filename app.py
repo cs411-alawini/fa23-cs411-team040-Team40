@@ -31,7 +31,7 @@ app.secret_key = 'team40'
 
 
 from Friends.friends import friends_bp
-from Display.games import games_bp
+from Games.games import games_bp
 from Login.loginSignup import login_bp
 from Likes.likes import likes_bp
 from Search.search import search_bp
