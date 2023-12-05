@@ -33,11 +33,13 @@ app.secret_key = 'team40'
 from Friends.friends import friends_bp
 from Display.games import games_bp
 from Login.loginSignup import login_bp
+from Likes.likes import likes_bp
 from Search.search import search_bp
 app.register_blueprint(friends_bp)
 app.register_blueprint(games_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(search_bp)
+app.register_blueprint(likes_bp)
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=5000, debug=True)

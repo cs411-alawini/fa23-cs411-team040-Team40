@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steam</title>
-    <style>
+    <title>Steam - Game Results</title>
+        <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -54,47 +54,6 @@
             display: none;
         }
 
-        .friends-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .friend {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .friend-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .add-friend-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .add-friend-form input {
-            width: 200px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .add-friend-form button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4caf50;
-            color: white;
-            cursor: pointer;
-        }
     </style>
 </head>
 
@@ -106,39 +65,35 @@
             <a class="tab" href="/gamesearch">Game Search</a>
             <a class="tab" href="/gamerec">Game Reccomender</a>
             <a class="tab active" href="/friends">Friends</a>
-            <a class="tab" href="/games">Your Games</a>
+            <a class="tab" href="/games">Your Games</a> 
             <a class="tab" href="/likes">Favorites</a> 
         </div>
 
         <div class="main-box">
             <div class="friends-list">
-                <h2>Friends List:</h2>
+                <h2>Favorites List:</h2>
                 <ul class="friend-list">
-                    {% for friend in friends %}
+                    {% for game in favorites %}
                     <li class="friend-item">
-                        <span class="friend-name">{{ friend[1] }}</span>
-                        <form class="friend-games-form" method= "GET" action="/games">
-                            <input type="hidden" name="friendid" value="{{ friend[0] }}">
-                            <button class="friend-games-button" type="submit">review</button>
-                        </form>
-                        <form class="remove-friend-form" method="POST" action="/friends/remove">
-                            <input type="hidden" name="friendid" value="{{ friend[0] }}">
+                        <span class="friend-name">{{ game }}</span>
+                        <form class="remove-friend-form" method="POST" action="/likes/remove">
+                            <input type="hidden" name="game_title" value="{{ game }}">
                             <button class="remove-friend-button" type="submit">remove</button>
                         </form>
                     </li>
                     {% endfor %}
-                    {% if not friends %}
-                        <span>No friends added currently</span>
+                    {% if not favorites %}
+                        <span>No Games Favorited currently</span>
                     {% endif %}
                 </ul>
             </div>
 
 
             <div class="add-friend-box">
-                <h2>Add Friends:</h2>
-                <form method="POST" action="/friends">
-                    <input type="text" name="friendname" placeholder="Enter username">
-                    <button type="submit" value="Add Friend"> add</button>
+                <h2>Add Games:</h2>
+                <form method="POST" action="/likes">
+                    <input type="text" name="gamename" placeholder="Enter Game">
+                    <button type="submit" value="Add Game"> add</button>
                 </form>
             </div>
         </div>

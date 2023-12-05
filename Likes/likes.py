@@ -1,48 +1,52 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
-from app import pool
+from db import pool
 
-likes = Blueprint('likes', __name__, url_prefix='/likes')
-@likes.route('/', methods=['POST'])
+likes_bp = Blueprint('likes', __name__, url_prefix='/likes')
+@likes_bp.route('/', methods=['GET', 'POST'])
 def like_game():
+    session['userid'] = 1
+    session['username'] = 'test'
     if 'username' not in session:
         return redirect(url_for('login.login')) #########
 
     userid = session['userid']
     connection = pool.raw_connection()
     cursor = connection.cursor()
-
+    cursor.execute("SELECT gid from Likes where uid = %s", (userid,))
+    gids = cursor.fetchall()
+    cursor.execute("SELECT title from Games where gid in %s", (gids,))
+    game_titles = [game[0] for game in list(cursor.fetchall())]
+    if request.method == "GET":
+        return render_template('favorites.html', favorites=game_titles)
     gamename = request.form['gamename']
-    gameid = cursor.execute("SELECT gid FROM Games WHERE title = %s", (gamename,))
+    cursor.execute("SELECT gid FROM Games WHERE title = %s", (gamename,))
+    gid = cursor.fetchone()[0]
+    if gid == ():
+        flash('Game does not exist')
+        return redirect(url_for('likes.like_game', methods=["GET"]))
+    elif gid in gids:
+        flash('Game Already Favorited')
+        return redirect(url_for('likes.like_game', methods=["GET"]))
+    else:
+        cursor.execute("INSERT INTO Likes (uid, gid) VALUES (%s, %s)", (userid, gid))
+        connection.commit()
+        flash('Successfully added Game')
+        return redirect(url_for('likes.like_game', methods=["GET"]))
 
-    # Fetch user using raw SQL query
-    cursor.execute("SELECT * FROM Users WHERE uid = %s", (userid,))
-    user = cursor.fetchone()
+@likes_bp.route('/remove', methods=["POST"])
+def remove_game():
+    if 'username' not in session:
+        return redirect(url_for('login.login'))
+    userid = session['userid']
+    connection = pool.raw_connection()
+    cursor = connection.cursor()
 
-    if not user:
-        flash("User not found.", 'error')
-        return redirect(url_for('gamesearch'))
-
-    # Fetch game using raw SQL query
-    cursor.execute("SELECT * FROM Games WHERE gid = %s", (gameid,))
-    game = cursor.fetchone()
-
-    if not game:
-        flash("Game not found.", 'error')
-        return redirect(url_for('gamesearch'))
-
-    # Check if the user already likes the game using raw SQL query
-    cursor.execute("SELECT * FROM Likes WHERE uid = %s AND gid = %s", (userid, gameid))
-    existing_like = cursor.fetchone()
-
-    if existing_like:
-        flash("You already liked this game.", 'info')
-        return redirect(url_for('gamesearch'))
-
-    # Add a like for the user and game using raw SQL query
-    cursor.execute("INSERT INTO Likes (uid, gid) VALUES (%s, %s)", (userid, gameid))
+    game_title = request.form['game_title']
+    cursor.execute("Select gid from Games where title = %s", game_title)
+    gid = cursor.fetchone()[0]
+    cursor.execute("DELETE from Likes WHERE uid=%s and gid=%s", (userid, gid))
     connection.commit()
-    flash("You liked the game!", 'success')
-
-    return redirect(url_for('gamesearch'))
+    flash(f'Successfully unfavorited {game_title}')
+    return redirect(url_for('likes.like_game', methods=["GET"]))
 
 
