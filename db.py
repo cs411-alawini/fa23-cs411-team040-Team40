@@ -1,4 +1,3 @@
-from flask import Flask, render_template, jsonify, redirect, request, url_for, flash, session
 from google.cloud.sql.connector import Connector
 import sqlalchemy
 import pymysql
