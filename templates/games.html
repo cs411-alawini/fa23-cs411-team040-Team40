@@ -60,6 +60,13 @@
 <body>
     <div class="container">
         <h1>Steam - Game Results</h1>
+        <div class="tabs">
+            <a class="tab" href="/gamesearch">Game Search</a>
+            <a class="tab" href="/gamerec">Game Reccomender</a>
+            <a class="tab active" href="/friends">Friends</a>
+            <a class="tab" href="/reviews">My Reviews</a>
+            <a class="tab" href="/likes">Favorites</a> 
+        </div>
 
         <div class="game-results">
             {% for game_info in games_list %}
