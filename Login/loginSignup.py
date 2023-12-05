@@ -12,8 +12,6 @@ def login():
         cursor = connection.cursor()
         cursor.execute(query)
         results = cursor.fetchone()[0]
-        cursor.execute(f"select uid from Users where username='{username}' and password='{password}'")
-        uid = cursor.fetchone()[0]
         # with pool.connect() as db_conn:
         #     results = db_conn.execute(sqlalchemy.text(query)).fetchall()
         #     uid = db_conn.execute(sqlalchemy.text(f"select uid from Users where username='{username}' and password='{password}'")).fetchall()[0][0]
@@ -22,6 +20,9 @@ def login():
         if results == 0:
             flash("Incorrect Username or Password, please try again or signup for an account", 'error')
             return redirect(url_for('login.login'))
+
+        cursor.execute(f"select uid from Users where username='{username}' and password='{password}'")
+        uid = cursor.fetchone()[0]
 
         #Using sessions so that user can later have personalized page
         session['username'] = username
