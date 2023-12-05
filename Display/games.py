@@ -47,4 +47,4 @@ def game():
         current_user_likes = False
     else:
         current_user_likes = True
-    return render_template("game.html", game_info=game_info, existing_reviews=existing_reviews, current_user_likes=)
+    return render_template("game.html", game_info=game_info, existing_reviews=existing_reviews, current_user_likes=current_user_likes)
