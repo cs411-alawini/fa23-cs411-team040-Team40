@@ -17,7 +17,7 @@ def like_game():
         return render_template('games.html', game_list = like_lists)
     
     gid = request.form['gid']
-    cursor.execute("SELECT gid where uid = %s", (userid,))
+    cursor.execute("SELECT gid from Likes where uid = %s", (userid,))
     gids = list(cursor.fetchall())
 
     if gid == ():
