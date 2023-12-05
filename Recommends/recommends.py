@@ -1,8 +1,9 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
-from app import pool
+from db import pool
 
-recommends = Blueprint('recommends', __name__, url_prefix='/recommends')
+recommends_bp = Blueprint('recommends', __name__, url_prefix='/recommends')
 # Recommend games based on the user's likes and the user's friends' likes
+@recommends_bp.route('/', methods=['GET'])
 def recommend_games():
     if 'username' not in session:
         return redirect(url_for('login.login'))
@@ -29,10 +30,8 @@ def recommend_games():
 
     # Fetch game details based on the liked game IDs
     cursor.execute(
-        "SELECT title, link, genre, rating, content FROM Games NATURAL JOIN Reviews WHERE gid IN %s ORDER BY rating DESC",
+        "SELECT gid, title, link, introduction FROM Games WHERE gid IN %s",
         (tuple(all_liked_games),)
     )
-    recommended_games = cursor.fetchall()
-
-
-    return redirect(url_for('gamesearch'))
+    recommended_games = list(cursor.fetchall())
+    return render_template('games.html', games_list = recommended_games)
