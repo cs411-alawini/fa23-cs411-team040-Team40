@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
 from db import pool
+import pymysql
 
 friends_bp = Blueprint('friends', __name__, url_prefix='/friends')
 
@@ -19,6 +20,7 @@ def add_friend():
 
     friendname = request.form['friendname']
     cursor.execute("SELECT uid FROM Users WHERE username = %s", friendname)
+    connection.commit()
     friendid = cursor.fetchall()
     if friendid == ():
         flash('User does not exist')
@@ -27,10 +29,13 @@ def add_friend():
         flash('Cannot add yourself as a friend')
         return redirect(url_for('add_friend', methods=["GET"]))
     else:
-        cursor.execute("INSERT INTO Friends (uid, friendid) VALUES (%s, %s)", (userid, friendid))
-        connection.commit()
-        flash('Successfully added friend')
-        return redirect(url_for('add_friend', methods=["GET"]))
+        try:
+            cursor.execute("INSERT INTO Friends (uid, friendid) VALUES (%s, %s)", (userid, friendid))
+            connection.commit()
+            flash('Successfully added friend')
+        except pymysql.err.IntegrityError as e:
+            flash('User already added as a friend')
+        return redirect(url_for("friends.add_friend"))
 
 
 @friends_bp.route('/remove', methods=["POST"])
@@ -48,7 +53,7 @@ def remove_friend():
     cursor.execute("DELETE FROM Friends WHERE uid = %s AND friendid = %s", (userid, friendid))
     connection.commit()
     flash(f'Successfully removed {friendname} as a friend')
-    return redirect(url_for('add_friend', methods=["GET"]))
+    return redirect(url_for('friends.add_friend'))
 
 
 
