@@ -1,8 +1,8 @@
 from flask import Flask, Blueprint, flash, redirect, render_template, request, url_for, session
 from app import pool
 
-reviews = ('reviews', __name__, url_prefix='/reviews')
-@reviews.route('/', methods=['GET', 'POST'])
+reviews_bp = Blueprint('reviews', __name__, url_prefix='/reviews')
+@reviews_bp.route('/', methods=['GET', 'POST'])
 def review_game():
     if 'username' not in session:
         return redirect(url_for('login.login'))
@@ -38,3 +38,5 @@ def review_game():
         existing_reviews = cursor.fetchall()
 
         return render_template('reviews.html', gameid=gameid, existing_reviews=existing_reviews)
+    
+    @reviews_bp.route('/remove', methods=['POST'])
