@@ -40,7 +40,6 @@ def game():
     existing_reviews = list(cursor.fetchall())
     cursor.execute("SELECT gid, title, link, introduction FROM Games WHERE gid = %s", (gid,))
     game_info = cursor.fetchone()
-    print(game_info)
     cursor.execute("SELECT * FROM Likes WHERE uid = %s AND gid = %s", (userid, gid))
     current_user_likes = cursor.fetchall()
     connection.commit()
