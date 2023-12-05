@@ -25,7 +25,7 @@ def login():
 
         #Using sessions so that user can later have personalized page
         session['username'] = username
-        session['uid'] = uid
+        session['userid'] = uid
 
         return redirect(url_for('search.get_search_term')) #change this to home page later
     
@@ -59,7 +59,7 @@ def signup():
         
         #Adding username to session
         session['username'] = username
-        session['uid'] = numUsers
+        session['userid'] = numUsers
 
         return redirect(url_for('search.get_search_term')) #change this to home page later
     

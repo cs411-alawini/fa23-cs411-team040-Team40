@@ -65,8 +65,8 @@
             <h2>{{ game_info[1] }}</h2>
             <p>{{ game_info[3] }}</p>
 
-            {% if current_user_likes_game %}
-                <form method="post" action="/likes/dislike">
+            {% if current_user_likes %}
+                <form method="post" action="/likes/remove">
                     <input type="hidden" name="gid" value="{{ game_info[0] }}">
                     <button type="submit">dislike</button>
                 </form>

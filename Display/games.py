@@ -25,7 +25,6 @@ def games():
 
     gid = request.form['gid']
     session['gid'] = gid
-    print(session)
     return redirect(url_for("games.game"))
 
 @games_bp.route('/game', methods=['GET'])
@@ -41,4 +40,11 @@ def game():
     existing_reviews = list(cursor.fetchall())
     cursor.execute("SELECT * FROM Games WHERE gid = %s", (gid,))
     game_info = cursor.fetchone()
-    return render_template("game.html", game_info=game_info, existing_reviews=existing_reviews)
+    cursor.execute("SELECT * FROM Likes WHERE uid = %s AND gid = %s", (userid, gid))
+    current_user_likes = cursor.fetchall()
+    connection.commit()
+    if current_user_likes == ():
+        current_user_likes = False
+    else:
+        current_user_likes = True
+    return render_template("game.html", game_info=game_info, existing_reviews=existing_reviews, current_user_likes=)
