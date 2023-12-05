@@ -1,62 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Game Search System</title>
-    <!-- Add any additional stylesheets or scripts here -->
+    <title>Steam</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Steam - Game Results</title>
+            <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+            }
+    
+            .container {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 80%;
+                margin: auto;
+            }
+    
+            h1 {
+                text-align: center;
+                color: #333;
+            }
+    
+            .tabs {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+    
+            .tab {
+                padding: 10px 20px;
+                cursor: pointer;
+                background-color: #eee;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+    
+            .tab.active {
+                background-color: #ddd;
+            }
+    
+            .tab-content {
+                display: none;
+            }
+    
+        </style>
+    </head>
 </head>
+
 <body>
-    <h1>Game Search System</h1>
+    <div class="container">
+        <h1>Steam</h1>
 
-    <form action="/gamesearch/results" method="get">
-        <!-- Search Box for Game Pattern -->
-        <label for="pattern">Search Games</label>
-        <input type="text" id="pattern" name="pattern" placeholder="Enter game name or keyword">
-        <br><br>
+        <div class="tabs">
+            <a class="tab" href="/gamesearch">Game Search</a>
+            <a class="tab" href="/gamerec">Game Reccomender</a>
+            <a class="tab active" href="/friends">Friends</a>
+            <a class="tab" href="/games">Your Games</a> 
+            <a class="tab" href="/likes">Favorites</a> 
+        </div>
 
-        <!-- Search Box for Game Producer -->
-        <label for="producer">Producer</label>
-        <input type="text" id="producer" name="producer" placeholder="Enter game producer or keyword">
-        <br><br>
+        <h1>Game Search System</h1>
 
-        <!-- Price Range -->
-        <label for="prices">Price Range</label>
-        <input type="number" name="lprice" placeholder="Lowest Price">
-        <input type="number" name="hprice" placeholder="Highest Price">
-        <br><br>
+        <form action="/gamesearch/results" method="get">
+            <!-- Search Box for Game Pattern -->
+            <label for="pattern">Search Games</label>
+            <input type="text" id="pattern" name="pattern" placeholder="Enter game name or keyword">
+            <br><br>
 
-        <!-- Check for Selecting Genres -->
-        <fieldset>
-            <legend>Genres</legend>
-            <input type="checkbox" name="genres" value="1"> Indie <br>
-            <input type="checkbox" name="genres" value="2"> Action <br>
-            <input type="checkbox" name="genres" value="3"> Adventure <br>
-            <input type="checkbox" name="genres" value="4"> Casual <br>
-            <input type="checkbox" name="genres" value="5"> Strategy <br>
-            <input type="checkbox" name="genres" value="6"> RPG <br>
-            <input type="checkbox" name="genres" value="7"> Simulation <br>
-            <input type="checkbox" name="genres" value="8"> EarlyAccess <br>
-            <input type="checkbox" name="genres" value="9"> FreeToPlay <br>
-            <input type="checkbox" name="genres" value="10"> Sports <br>
-            <input type="checkbox" name="genres" value="11"> Racing <br>
-            <input type="checkbox" name="genres" value="12"> MassivelyMultiplayer <br>
-            <!-- Add more genre checkboxes -->
-        </fieldset>
-        <br><br>
+            <!-- Search Box for Game Producer -->
+            <label for="producer">Producer</label>
+            <input type="text" id="producer" name="producer" placeholder="Enter game producer or keyword">
+            <br><br>
 
-        <!-- Check for Selecting Platform -->
-        <fieldset>
-            <legend>Platforms</legend>
-            <input type="checkbox" name="platforms" value="0"> Windows <br>
-            <input type="checkbox" name="platforms" value="1"> Linux <br>
-            <input type="checkbox" name="platforms" value="2"> Mac <br>
-            <!-- Add more platform checkboxes -->
-        </fieldset>
-        <br><br>
+            <!-- Price Range -->
+            <label for="prices">Price Range</label>
+            <input type="number" name="lprice" placeholder="Lowest Price">
+            <input type="number" name="hprice" placeholder="Highest Price">
+            <br><br>
 
-        
+            <!-- Check for Selecting Genres -->
+            <fieldset>
+                <legend>Genres</legend>
+                <input type="checkbox" name="genres" value="1"> Indie <br>
+                <input type="checkbox" name="genres" value="2"> Action <br>
+                <input type="checkbox" name="genres" value="3"> Adventure <br>
+                <input type="checkbox" name="genres" value="4"> Casual <br>
+                <input type="checkbox" name="genres" value="5"> Strategy <br>
+                <input type="checkbox" name="genres" value="6"> RPG <br>
+                <input type="checkbox" name="genres" value="7"> Simulation <br>
+                <input type="checkbox" name="genres" value="8"> EarlyAccess <br>
+                <input type="checkbox" name="genres" value="9"> FreeToPlay <br>
+                <input type="checkbox" name="genres" value="10"> Sports <br>
+                <input type="checkbox" name="genres" value="11"> Racing <br>
+                <input type="checkbox" name="genres" value="12"> MassivelyMultiplayer <br>
+                <!-- Add more genre checkboxes -->
+            </fieldset>
+            <br><br>
 
-        <!-- Search Button -->
-        <input type="submit" value="Search">
-    </form>
+            <!-- Check for Selecting Platform -->
+            <fieldset>
+                <legend>Platforms</legend>
+                <input type="checkbox" name="platforms" value="0"> Windows <br>
+                <input type="checkbox" name="platforms" value="1"> Linux <br>
+                <input type="checkbox" name="platforms" value="2"> Mac <br>
+                <!-- Add more platform checkboxes -->
+            </fieldset>
+            <br><br>
+
+            
+
+            <!-- Search Button -->
+            <input type="submit" value="Search">
+        </form>
 </body>
 </html>

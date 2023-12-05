@@ -27,7 +27,7 @@ def login():
         session['username'] = username
         session['uid'] = uid
 
-        return redirect(url_for('friends.add_friend')) #change this to home page later
+        return redirect(url_for('search.get_search_term')) #change this to home page later
     
     return render_template("login.html")
 
@@ -61,7 +61,7 @@ def signup():
         session['username'] = username
         session['uid'] = numUsers
 
-        return redirect(url_for('friends.add_friend')) #change this to home page later
+        return redirect(url_for('search.get_search_term')) #change this to home page later
     
     return render_template("signup.html")
 
