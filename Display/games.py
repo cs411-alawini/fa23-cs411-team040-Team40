@@ -38,7 +38,7 @@ def game():
     gid = session['gid']
     cursor.execute("SELECT username, rating, content FROM Reviews NATURAL JOIN Users WHERE gid = %s limit 5", (gid,))
     existing_reviews = list(cursor.fetchall())
-    cursor.execute("SELECT * FROM Games WHERE gid = %s", (gid,))
+    cursor.execute("SELECT gid, title, link, introduction FROM Games WHERE gid = %s", (gid,))
     game_info = cursor.fetchone()
     cursor.execute("SELECT * FROM Likes WHERE uid = %s AND gid = %s", (userid, gid))
     current_user_likes = cursor.fetchall()
