@@ -14,7 +14,8 @@ def like_game():
     if request.method == "GET":
         cursor.execute("SELECT gid, title, link, introduction from Likes natural join Games where uid = %s", (userid,))
         like_lists = list(cursor.fetchall())
-        return render_template('games.html', game_list = like_lists)
+        print(like_lists)
+        return render_template('games.html', games_list=like_lists)
     
     gid = request.form['gid']
     cursor.execute("SELECT gid from Likes where uid = %s", (userid,))

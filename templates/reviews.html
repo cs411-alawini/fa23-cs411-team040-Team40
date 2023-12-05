@@ -74,7 +74,7 @@
                     <!-- existing_reviews: gid, title, rating, content -->
                         <li>{{ review[1] }} - {{ review[2] }}/10: {{ review[3] }}</li>
                         <form method="post" action="/reviews/remove">
-                            <input type="hidden" name="gid" value="{{ existing_reviews[0] }}">
+                            <input type="hidden" name="gid" value="{{ review[0] }}">
                             <button type="submit">remove</button>
                         </form>
                     {% endfor %}
