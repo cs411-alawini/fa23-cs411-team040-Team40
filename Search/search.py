@@ -36,7 +36,7 @@ def get_search_results():
         conditions.append(f"LatestPrices.Finalprice <= {highest_price}")
     
     query = f"""
-SELECT DISTINCT Games.gid
+SELECT DISTINCT Games.*
 FROM Games
 LEFT JOIN GameType ON Games.gid = GameType.gid
 LEFT JOIN Products ON Games.gid = Products.gid
@@ -46,10 +46,9 @@ LEFT JOIN (SELECT p.* FROM Prices p JOIN (SELECT gid, MAX(Date) as LatestDate FR
           ON p.gid = latest_prices.gid AND p.Date = latest_prices.LatestDate) LatestPrices  ON Games.gid = LatestPrices.gid
 WHERE {' AND '.join(conditions)};
     """
-    print(query)
+    #print(query)
     
     cursor.execute(query)
-
-    games = cursor.fetchall()
-    print(games)
-    return games
+    games_list = cursor.fetchall()
+    
+    return render_template("games.html", games_list=games_list)
