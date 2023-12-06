@@ -24,10 +24,10 @@ def add_friend():
     friendid = cursor.fetchall()
     if friendid == ():
         flash('User does not exist')
-        return redirect(url_for('add_friend', methods=["GET"]))
-    elif friendid[0] == userid:
+        return redirect(url_for('friends.add_friend', methods=["GET"]))
+    elif friendid[0][0] == userid:
         flash('Cannot add yourself as a friend')
-        return redirect(url_for('add_friend', methods=["GET"]))
+        return redirect(url_for('friends.add_friend', methods=["GET"]))
     else:
         try:
             cursor.execute("INSERT INTO Friends (uid, friendid) VALUES (%s, %s)", (userid, friendid))
@@ -35,7 +35,7 @@ def add_friend():
             flash('Successfully added friend')
         except pymysql.err.IntegrityError as e:
             flash('User already added as a friend')
-        return redirect(url_for("friends.add_friend"))
+        return redirect(url_for("friends.add_friend", methods=["GET"]))
 
 
 @friends_bp.route('/remove', methods=["POST"])
