@@ -127,3 +127,16 @@ BEGIN
 END$$
 DELIMITER ;
 ```
+
+# Trigger 1
+## LoginSignup Trigger
+
+This trigger makes sure that no duplicate user credentials are present in the Users table. This is done by checking that the newly created username is not in the Users table before inserting it.
+
+```mysql=
+CREATE TRIGGER verifyUserSignup before insert on Users
+    IF NEW.username in (select username from Users) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'An error occurred';
+    END IF;
+```
