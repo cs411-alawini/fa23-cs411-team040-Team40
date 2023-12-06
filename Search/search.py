@@ -60,9 +60,7 @@ WHERE {' AND '.join(conditions)};
 
 
 """
-DELIMITER $$
-
-CREATE PROCEDURE SearchGames (
+CREATE DEFINER=`root`@`%` PROCEDURE `SearchGames`(
     IN in_pattern VARCHAR(255),
     IN in_genres TEXT,
     IN in_producer VARCHAR(255),
@@ -131,7 +129,5 @@ BEGIN
 
     -- Drop the temporary table
     DROP TEMPORARY TABLE IF EXISTS TempSearchResults;
-END$$
-
-DELIMITER ;
+END
 """
